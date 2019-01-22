@@ -1,0 +1,62 @@
+docker run -i -t busybox:1.24
+docker  run -d busybox:1.24 sleep 100
+docker inspect ID
+docker run -it -d -p 8888:8080 tomcat:8.0  ##-it  interactivo, -d background
+docker logs ID
+docker-machine ls #consultar ip
+---Commit
+docker commit ID ID_HUB/debian:1.00
+
+----Dockerfile
+touch Dockerfile
+vi Dockerfile
+ :wq!  ##Salir y guardar
+docker build -t estevanj/debian .
+
+##Cada run crea contenedor y lo elimina y lo monta
+##poner ordenado alfabeticamente
+## CMD comando cuando el contenedor se inicia
+FROM debian:jessie
+RUN apt-get update && apt-get install -y  \
+git \
+phyton \
+vim
+COPY abc.txt /src/abc.txt   #copia archivo fisico
+ADD #Descomprime y descarga y copia
+CMD ["echo", "Hello word"]
+
+----Subir a HUB
+docker images
+docker tag ID IDHUB/newname:1.01
+docker docker login --username=estevanj
+docker push IDHUB/newname:1.01
+---------
+docker exec -it ID  bash#ejecutar comandos cuando el contenedor esta corriendo
+docker run -d -p 5000:5000 dockerapp:v0.2
+docker inspecct  ID | grep IP
+
+########Docker compose
+docker-compose.yml
+docker-compose up -d  #corre todos los contenedores
+docker-compose ps  #consulta estado contenedores
+docker-compose logs -f
+docker-compose stop
+docker-compose rm 
+docker-compose build #reconstruye imagenes 
+
+#####Redes Docker
+docker networks ls
+	red None: aislado, cerrado del internet
+	docker run -d --net none TAG
+	docker run -d --net host TAG  #publica sin seguridad
+	Red Overlay: multiples maquinas host
+
+##Modelos de red Docker-compose
+NETWORK: bridge
+
+###
+Docker-compose run ##corre servicio especifico
+Docker-compose run dockerapp python test.py
+
+
+ 
